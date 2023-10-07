@@ -1,0 +1,47 @@
+---
+import { Icon } from "astro-icon";
+import type { PersonalInfo, SocialProfile } from "@data";
+
+const { name, socialMediaProfiles } = Astro.props as {
+  name: PersonalInfo["name"];
+  socialMediaProfiles: SocialProfile[];
+};
+---
+
+<footer class="mt-16 sm:mt-4 relative h-[220px] md:h-[260px] 2xl:h-[350px]">
+  <div class="absolute w-full h-full overflow-hidden -z-10">
+    <div
+      class="h-full w-full top-0 left-0 origin-bottom-right -skew-y-6 bg-slate-800 overflow-hidden opacity-90"
+    >
+    </div>
+  </div>
+  <div
+    class="flex flex-col md:flex-row justify-between items-center container pt-[3rem] md:pt-[9rem] 2xl:pt-[14rem]"
+  >
+    <p
+      class="text-slate-200 text-right my-6 md:my-8 font-montserrat inline-flex items-center order-last md:order-first"
+    >
+      Made with <Icon name="love" /> by &nbsp;<strong>{name}</strong>
+    </p>
+    <div class="grid grid-cols-4 gap-4">
+      {
+        socialMediaProfiles.map((socialMediaProfile) => (
+          <a
+            aria-label="Social Media"
+            href={socialMediaProfile.name.toLowerCase() === "email" ? `mailto:${socialMediaProfile.url}` : socialMediaProfile.url}
+            target={socialMediaProfile.name.toLowerCase() === "email" ? "_self" : "_blank"}
+            class="text-slate-200 flex items-center p-4 rounded-lg justify-center hover:bg-slate-700 transition duration-150 ease-in-out"
+          >
+            <Icon name={socialMediaProfile.name.toLowerCase()} />
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</footer>
+
+<style lang="css">
+  [astro-icon] {
+    width: 1.5rem;
+  }
+</style>

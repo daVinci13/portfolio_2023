@@ -1,0 +1,32 @@
+---
+import { Icon } from "astro-icon";
+import type { Languages } from "@data"; // Import Languages instead of Project
+import Badge from "./ui/Badge.astro";
+
+export interface Props {
+  language: Languages; // Change the prop type to Languages
+}
+
+const { language } = Astro.props;
+const { name, description } = language; // Change project to language
+
+---
+
+<article
+  class="border border-slate-300 dark:border-slate-700 rounded-lg shadow-md bg-slate-100 dark:bg-slate-800"
+>
+  <div class="p-2">
+    <Badge content={name} />
+    <p
+      class="font-normal text-gray-700 dark:text-gray-400 mt-2"
+    >
+      {description}
+    </p>
+  </div>
+</article>
+
+<style lang="css">
+  [astro-icon] {
+    width: 1rem;
+  }
+</style>

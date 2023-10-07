@@ -1,0 +1,121 @@
+---
+import { Icon } from "astro-icon";
+---
+
+<header class="container flex items-center justify-end h-[80px] sm:h-[123px]">
+  <nav>
+    <ul class="flex items-center">
+      <li>
+        <a
+          class="p-2 md:p-4 dark:text-gray-100 block text-md font-montserrat group transition duration-300"
+          href="#certification"
+          >Certifications
+          <span
+            class="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-violet-300"
+          ></span>
+        </a>
+      </li>
+      <li>
+        <a
+          class="p-2 md:p-4 dark:text-gray-100 block text-md font-montserrat group transition duration-300"
+          href="#projects"
+          >Projects
+          <span
+            class="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-violet-300"
+          ></span>
+        </a>
+      </li>
+      <li>
+        <a
+          class="p-2 md:p-4 dark:text-gray-100 block text-md font-montserrat group transition duration-300"
+          href="#skills"
+          >Skills
+          <span
+            class="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-violet-300"
+          ></span>
+        </a>
+      </li>
+      <li>
+        <button
+          aria-label="theme-button"
+          id="theme-button"
+          class="dark:text-gray-100 rounded-lg p-4 ml-2 bg-slate-200 dark:bg-slate-800"
+        >
+          <Icon name="moon" id="moon-svg" />
+          <Icon name="sun" id="sun-svg" />
+        </button>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<script>
+  // Setup theme types
+  const LS_THEME_KEY = "dc-theme";
+  const themes = ["dark", "light"] as const;
+  type ThemeTuple = typeof themes;
+  type Theme = ThemeTuple[number];
+  function isTheme(themeVal: string): themeVal is Theme {
+    return themes.includes(themeVal as Theme);
+  }
+
+  // Get elements
+  const moonSvg = document.getElementById("moon-svg");
+  const sunSvg = document.getElementById("sun-svg");
+  const themeButton = document.getElementById("theme-button");
+  if (!themeButton) {
+    throw new Error("Theme button not found");
+  }
+
+  // Theme button icon setter
+  const setThemeIcon = (newTheme: Theme): void => {
+    if (moonSvg && sunSvg) {
+      if (newTheme === "dark") {
+        moonSvg.classList.add("hidden");
+        sunSvg.classList.remove("hidden");
+      } else {
+        moonSvg.classList.remove("hidden");
+        sunSvg.classList.add("hidden");
+      }
+    }
+  };
+
+  // Theme setter
+  const setTheme = (newTheme: Theme): void => {
+    document.documentElement.setAttribute("data-theme", newTheme);
+    window.localStorage.setItem(LS_THEME_KEY, newTheme);
+    setThemeIcon(newTheme);
+    theme = newTheme;
+  };
+
+  // Get initial theme
+  let theme = ((): Theme => {
+    if (typeof localStorage !== "undefined") {
+      const lsTheme = localStorage.getItem(LS_THEME_KEY);
+      if (lsTheme && isTheme(lsTheme)) {
+        return lsTheme;
+      }
+    }
+    if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+      return "light";
+    }
+    return "dark";
+  })();
+  // Set initial theme
+  setTheme(theme);
+
+  // Theme button handler
+  const darkModeHandler = () => {
+    const newTheme: Theme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+  };
+
+  // Add event listener to theme button
+  themeButton.addEventListener("click", darkModeHandler);
+</script>
+
+<style lang="css">
+  [astro-icon] {
+    width: 1rem;
+  }
+</style>

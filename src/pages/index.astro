@@ -1,0 +1,39 @@
+---
+import {
+  personalInfo,
+  projects,
+  //work,
+  skills,
+  certification,
+  socialMediaProfiles,
+  spokenLanguages,
+  headMeta,
+} from "@data";
+
+import Layout from "../layouts/Layout.astro";
+
+import Hero from "@components/sections/Hero.astro";
+//import Work from "@components/sections/Work.astro";
+import Certification from "@components/sections/Certification.astro";
+import Skills from "@components/sections/Skills.astro";
+import Languages from "@components/sections/Languages.astro";
+import Projects from "@components/sections/Projects.astro";
+import Contact from "@components/sections/Contact.astro";
+
+const githubUrl = socialMediaProfiles.find(
+  (profile) => profile.name === "GitHub"
+)!.url;
+const email = socialMediaProfiles.find(
+  (profile) => profile.name === "Email"
+)!.url;
+---
+
+<Layout title={personalInfo.name} headMeta={headMeta}>
+  <Hero name={personalInfo.name} email={email} />
+  {/* {false && <Work works={work} />} */}
+  <Certification certifications={certification} />
+  <Projects projects={projects} />
+  <Skills data={skills} />
+  <Languages languages={spokenLanguages} />
+  <Contact email={email} />
+</Layout>
